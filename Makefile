@@ -2,8 +2,8 @@ sources = $(wildcard *.cpp)
 headers = $(wildcard *.h)
 objects = $(sources:%.cpp=%.o)
 dependency = Makefile.dependencies
-CFLAGS += -g -I../library
-CXXFLAGS += -g -I../library
+CFLAGS += -g -Ilibrary
+CXXFLAGS += -g -Ilibrary
 
 all: client
 
@@ -14,15 +14,15 @@ submit: client
 
 clean:
 	rm -f $(objects) client $(dependency)
-	make -C ../library clean
+	make -C library clean
 
-client: $(objects) ../library/client.a ../library/sexp/sexp.a
+client: $(objects) library/client.a library/sexp/sexp.a
 	$(CXX) $(LDFLAGS) $(LOADLIBES) $(LDLIBS) $^ -g -o client
 
-../library/client.a:
+library/client.a:
 	$(MAKE) -C $(dir $@) $(notdir $@)
 
-../library/sexp/sexp.a:
+library/sexp/sexp.a:
 	$(MAKE) -C $(dir $@) $(notdir $@)
 
 $(dependency): $(sources) $(headers)
